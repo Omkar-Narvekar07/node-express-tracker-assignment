@@ -1,10 +1,8 @@
-import http from "http"
+import http from "node:http";
 
-const healthCheck = (req:http.IncomingMessage, res:http.ServerResponse) => {
-    if (req.method == 'GET' && req.url == "/health") {
-        res.writeHead(200, { "content-type": 'text/plain' });
-        res.end("Server is Healthy");
-    } 
-}
+const healthCheck = (req: http.IncomingMessage, res: http.ServerResponse) => {
+    res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
+    res.end("Server is Healthy");
+};
 
-export {healthCheck}
+export { healthCheck };
