@@ -38,5 +38,13 @@
         "category": "Education",
         "date": "2026-10-23",
         "createdAt": "2026-10-23T12:20:30Z"
+    },
+    {
+        "id": "exp_006",
+        "title": "Grocery shopping",
+        "amount": 1240.50,
+        "category": "Food",
+        "date": "2026-10-18",
+        "createdAt": "2026-10-18T14:32:10Z"
     }
 ]

@@ -10,14 +10,32 @@ interface Expense {
     date: string;
     createdAt: string;
 }
+type filter = {
+    categoryFilter:string|null,
+    dateFilter:string|null
+}
 
 const dataFilePath = path.join(process.cwd(),"/src/data/expenses.json");
 
-const getAllExpenses = async (req: http.IncomingMessage, res: http.ServerResponse) => {
+const getAllExpenses = async (req: http.IncomingMessage, res: http.ServerResponse,filters:filter) => {
     const rawExpenses = await fs.readFile(dataFilePath, 'utf-8');
-    const expenses = JSON.parse(rawExpenses);
+    const expenses:Expense[] = JSON.parse(rawExpenses);
+
+    let filteredExpenses:Expense[]=[];
+    if(filters.categoryFilter == null && filters.dateFilter == null ){
+        filteredExpenses = expenses
+    } else if (filters.categoryFilter != null && filters.dateFilter == null){
+         filteredExpenses = expenses.filter((element) => element.category == filters.categoryFilter)    
+    }
+    else if (filters.categoryFilter == null && filters.dateFilter != null){
+        filteredExpenses = expenses.filter((element) =>  element.date == filters.dateFilter)
+    }
+    else{
+        
+       filteredExpenses =  expenses.filter((element)=> element.category==filters.categoryFilter && element.date==filters.dateFilter)
+    }
     res.writeHead(200, { "content-type": 'application/json;charset=utf-8' })
-    res.end(JSON.stringify(expenses))
+    res.end(JSON.stringify(filteredExpenses))
 
 }
 
@@ -64,5 +82,5 @@ const getExpenseSummary = async (req: http.IncomingMessage, res: http.ServerResp
 
 
 
-export { getAllExpenses, getExpenseById, getExpenseSummary }
+export { getAllExpenses, getExpenseById, getExpenseSummary, type filter}
 

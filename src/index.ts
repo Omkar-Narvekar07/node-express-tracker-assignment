@@ -2,7 +2,7 @@ import { createServer } from "http";
 import process from "node:process";
 
 import { healthCheck } from "./controllers/healthCheck.controller.ts";
-import { getAllExpenses, getExpenseById ,getExpenseSummary } from "./controllers/expense.controller.ts";
+import { getAllExpenses, getExpenseById ,getExpenseSummary, type filter } from "./controllers/expense.controller.ts";
 
 try{
     // load env variables, can also use dotenv but avoided that to get bare experience of node
@@ -22,7 +22,13 @@ const server = createServer(async (req, res) => {
             return healthCheck(req, res);
         }
         if (req.method === "GET" && path === "/expenses") {
-            return await getAllExpenses(req, res);
+            const categoryFilter = url.searchParams.get('category');
+            const dateFilter = url.searchParams.get('date');
+            let filters:filter = {
+                categoryFilter:categoryFilter,
+                dateFilter:dateFilter
+            }
+            return await getAllExpenses(req, res,filters);
         }
         if (req.method === "GET" && path === "/summary") {
             return await getExpenseSummary(req, res);
