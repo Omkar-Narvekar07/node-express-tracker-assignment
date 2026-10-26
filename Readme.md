@@ -52,6 +52,20 @@ Type-check without running:
 pnpm check
 ```
 
+You can run test.sh for testing all the cases:
+
+```bash
+# terminal 1
+pnpm dev
+
+# terminal 2
+bash demo.sh                 # run straight through
+
+or
+
+PAUSE=1 bash demo.sh         # stop before each section so you can narrate
+```
+
 ## Data model
 
 | Field       | Type   | Set by | Notes                                        |
@@ -205,3 +219,4 @@ src/
 
 - Data is stored in a single JSON file that is rewritten on every change. Concurrent write requests can overwrite each other, so this is suitable for a single-user or demo setup only.
 - The server must be started from the project root.
+- Ai was used for refining the logic written by me and validating the code. It was also used to generate the expense.json file and test.sh file
