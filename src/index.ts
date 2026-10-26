@@ -2,7 +2,7 @@ import { createServer } from "http";
 import process from "node:process";
 
 import { healthCheck } from "./controllers/healthCheck.controller.ts";
-import { getAllExpenses, getExpenseById ,getExpenseSummary, type filter } from "./controllers/expense.controller.ts";
+import { getAllExpenses, getExpenseById ,getExpenseSummary, postExpenses, type filter ,patchExpenseById} from "./controllers/expense.controller.ts";
 
 try{
     // load env variables, can also use dotenv but avoided that to get bare experience of node
@@ -30,6 +30,10 @@ const server = createServer(async (req, res) => {
             }
             return await getAllExpenses(req, res,filters);
         }
+
+        if(req.method ==="POST" && path==="/expenses"){
+            return postExpenses(req,res);
+        }    
         if (req.method === "GET" && path === "/summary") {
             return await getExpenseSummary(req, res);
         }
@@ -37,6 +41,9 @@ const server = createServer(async (req, res) => {
         const match = path.match(/^\/expenses\/([^/]+)$/);
         if (req.method === "GET" && match) {
             return await getExpenseById(req, res, match[1] as string);
+        }
+        if (req.method === "PATCH" && match) {
+            return await patchExpenseById(req, res, match[1] as string);
         }
 
         res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });

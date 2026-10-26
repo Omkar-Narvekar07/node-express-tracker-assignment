@@ -2,7 +2,7 @@
     {
         "id": "exp_001",
         "title": "Grocery shopping",
-        "amount": 1840.50,
+        "amount": 1840.5,
         "category": "Food",
         "date": "2026-10-18",
         "createdAt": "2026-10-18T14:32:10Z"
@@ -10,7 +10,7 @@
     {
         "id": "exp_002",
         "title": "Metro card recharge",
-        "amount": 500.00,
+        "amount": 500,
         "category": "Transport",
         "date": "2026-10-19",
         "createdAt": "2026-10-19T08:05:41Z"
@@ -18,7 +18,7 @@
     {
         "id": "exp_003",
         "title": "Electricity bill",
-        "amount": 2350.00,
+        "amount": 2350,
         "category": "Utilities",
         "date": "2026-10-20",
         "createdAt": "2026-10-20T10:12:03Z"
@@ -26,7 +26,7 @@
     {
         "id": "exp_004",
         "title": "Movie tickets",
-        "amount": 700.00,
+        "amount": 700,
         "category": "Entertainment",
         "date": "2026-10-22",
         "createdAt": "2026-10-22T19:47:55Z"
@@ -34,7 +34,7 @@
     {
         "id": "exp_005",
         "title": "Online Python course",
-        "amount": 1299.00,
+        "amount": 1299,
         "category": "Education",
         "date": "2026-10-23",
         "createdAt": "2026-10-23T12:20:30Z"
@@ -42,9 +42,40 @@
     {
         "id": "exp_006",
         "title": "Grocery shopping",
-        "amount": 1240.50,
+        "amount": 1240.5,
         "category": "Food",
         "date": "2026-10-18",
         "createdAt": "2026-10-18T14:32:10Z"
+    },
+    {
+        "id": "exp_007",
+        "title": "Grocery shopping",
+        "amount": 1240.5,
+        "category": "Food",
+        "date": "2026-10-20",
+        "createdAt": "2026-10-20T14:32:10Z"
+    },
+    {
+        "id": "exp_007",
+        "title": "Grocery shopping",
+        "amount": 1240.5,
+        "category": "Food",
+        "date": "2026-10-20"
+    },
+    {
+        "id": "exp_007",
+        "title": "Grocery shopping",
+        "amount": 324,
+        "category": "Food",
+        "date": "2026-10-20",
+        "createdAt": "2026-10-20T14:32:10Z"
+    },
+    {
+        "title": "Grocery shopping",
+        "amount": 3,
+        "category": "Food",
+        "date": "2026-10-20",
+        "createdAt": "2026-10-20T14:32:10Z",
+        "id": "14f1d2ff-7f6f-4f44-a0fa-4bbde2048126"
     }
 ]
