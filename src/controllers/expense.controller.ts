@@ -142,7 +142,7 @@ const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
                         valid = typeof value === "string" && value.trim() !== "";
                         break;
                     case "amount":
-                        valid = typeof value === "number" && Number.isFinite(value) && value >= 0;
+                        valid = typeof value === "number" && Number.isFinite(value) && value > 0;
                         break;
                     case "date":
                         valid = typeof value === "string" && !Number.isNaN(Date.parse(value));
