@@ -1,4 +1,4 @@
-import http, { IncomingMessage } from "http"
+import http, { IncomingMessage, ServerResponse } from "http"
 import fs from "fs/promises"
 import path from "path"
 import crypto from "node:crypto"
@@ -80,7 +80,7 @@ const getExpenseSummary = async (req: http.IncomingMessage, res: http.ServerResp
 
 
 }
-import { randomUUID } from "node:crypto";
+
 
 const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
     const chunks: Buffer[] = [];
@@ -134,7 +134,7 @@ const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
 
             const expense = {
                 ...fields,
-                id: randomUUID(),
+                id: crypto.randomUUID(),
                 createdAt: new Date().toISOString(),
             } as Expense;
 
@@ -232,8 +232,26 @@ const patchExpenseById = (req: IncomingMessage, res: http.ServerResponse, id: st
     });
 };
 
+const deleteExpenseById = async(req:IncomingMessage, res:ServerResponse,id:string)=>{
+    try {
+        const rawExpenses = await fs.readFile(dataFilePath, "utf-8");
+        const expenses: Expense[] = JSON.parse(rawExpenses);
+        const newExpenses:Expense[] = expenses.filter((expense)=>expense.id !== id)
+        
+        const tmp = `${dataFilePath}.tmp`;
+        await fs.writeFile(tmp, JSON.stringify(expenses), "utf-8");
+        await fs.rename(tmp, dataFilePath);
+        res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
+        res.end(JSON.stringify(newExpenses));
+        
+    } catch (error) {
+        console.error("Delete expense failed", error);
+        res.writeHead(500, { "content-type": "text/plain;charset=utf-8" });
+        res.end("Delete failed");
+    }
+
+}
 
 
 
-
-export { getAllExpenses, getExpenseById, getExpenseSummary, type filter, postExpenses, patchExpenseById }
+export { getAllExpenses, getExpenseById, getExpenseSummary, type filter, postExpenses, patchExpenseById, deleteExpenseById}
