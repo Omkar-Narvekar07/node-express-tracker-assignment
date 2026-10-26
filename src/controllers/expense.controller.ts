@@ -27,12 +27,14 @@ const getAllExpenses = async (req: http.IncomingMessage, res: http.ServerRespons
         for (const [name, value] of [["startDate", filters.startDate], ["endDate", filters.endDate]] as const) {
             if (value !== null && (!datePattern.test(value) || Number.isNaN(Date.parse(value)))) {
                 res.writeHead(400, { "content-type": "application/json;charset=utf-8" });
-                return res.end(JSON.stringify({ error: `${name} must be a valid date in YYYY-MM-DD format` }));
+                res.end(JSON.stringify({ error: `${name} must be a valid date in YYYY-MM-DD format` }));
+                return
             }
         }
         if (filters.startDate !== null && filters.endDate !== null && filters.startDate > filters.endDate) {
             res.writeHead(400, { "content-type": "application/json;charset=utf-8" });
-            return res.end(JSON.stringify({ error: "startDate must not be after endDate" }));
+            res.end(JSON.stringify({ error: "startDate must not be after endDate" }));
+            return
         }
 
         const rawExpenses = await fs.readFile(dataFilePath, "utf-8");
@@ -118,11 +120,13 @@ const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
                 parsed = JSON.parse(Buffer.concat(chunks).toString("utf-8"));
             } catch {
                 res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                return res.end("Invalid JSON");
+                res.end("Invalid JSON");
+                return
             }
             if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
                 res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                return res.end("Body must be a JSON object");
+                res.end("Body must be a JSON object");
+                return
             }
             const input = parsed as Record<string, unknown>;
 
@@ -133,7 +137,8 @@ const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
                 const value = input[key];
                 if (value === undefined) {
                     res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                    return res.end(`${key} is required`);
+                    res.end(`${key} is required`);
+                    return
                 }
                 let valid: boolean;
                 switch (key) {
@@ -150,7 +155,8 @@ const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
                 }
                 if (!valid) {
                     res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                    return res.end(`${key} is invalid`);
+                    res.end(`${key} is invalid`);
+                    return
                 }
                 fields[key] = value;
             }
@@ -192,11 +198,13 @@ const patchExpenseById = (req: IncomingMessage, res: http.ServerResponse, id: st
                 parsed = JSON.parse(Buffer.concat(chunks).toString("utf-8"));
             } catch {
                 res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                return res.end("Invalid JSON");
+                res.end("Invalid JSON");
+                return
             }
             if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
                 res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                return res.end("Body must be a JSON object");
+                res.end("Body must be a JSON object");
+                return
             }
             const input = parsed as Record<string, unknown>;
 
@@ -221,13 +229,15 @@ const patchExpenseById = (req: IncomingMessage, res: http.ServerResponse, id: st
                 }
                 if (!valid) {
                     res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                    return res.end(`${key} is invalid`);
+                    res.end(`${key} is invalid`);
+                    return
                 }
                 fields[key] = value;
             }
             if (Object.keys(fields).length === 0) {
                 res.writeHead(400, { "content-type": "text/plain;charset=utf-8" });
-                return res.end("No valid fields to update");
+                res.end("No valid fields to update");
+                return
             }
 
             const rawExpenses = await fs.readFile(dataFilePath, "utf-8");
@@ -236,7 +246,8 @@ const patchExpenseById = (req: IncomingMessage, res: http.ServerResponse, id: st
 
             if (expenseIndex === -1) {
                 res.writeHead(404, { "content-type": "application/json;charset=utf-8" });
-                return res.end(JSON.stringify({ error: "Expense not found" }));
+                res.end(JSON.stringify({ error: "Expense not found" }));
+                return
             }
 
             expenses[expenseIndex] = { ...expenses[expenseIndex], ...fields } as Expense;
@@ -263,7 +274,8 @@ const deleteExpenseById = async (req: IncomingMessage, res: ServerResponse, id: 
 
         if (index === -1) {
             res.writeHead(404, { "content-type": "application/json;charset=utf-8" });
-            return res.end(JSON.stringify({ error: "Expense not found" }));
+            res.end(JSON.stringify({ error: "Expense not found" }));
+            return
         }
 
         const [deleted] = expenses.splice(index, 1);
