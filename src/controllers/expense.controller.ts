@@ -232,25 +232,31 @@ const patchExpenseById = (req: IncomingMessage, res: http.ServerResponse, id: st
     });
 };
 
-const deleteExpenseById = async(req:IncomingMessage, res:ServerResponse,id:string)=>{
+const deleteExpenseById = async (req: IncomingMessage, res: ServerResponse, id: string) => {
     try {
         const rawExpenses = await fs.readFile(dataFilePath, "utf-8");
         const expenses: Expense[] = JSON.parse(rawExpenses);
-        const newExpenses:Expense[] = expenses.filter((expense)=>expense.id !== id)
-        
-        const tmp = `${dataFilePath}.tmp`;
-        await fs.writeFile(tmp, JSON.stringify(newExpenses), "utf-8");
-        await fs.rename(tmp, dataFilePath);
-        res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
-        res.end(JSON.stringify(newExpenses));
-        
-    } catch (error) {
-        console.error("Delete expense failed", error);
-        res.writeHead(500, { "content-type": "text/plain;charset=utf-8" });
-        res.end("Delete failed");
-    }
+        const index = expenses.findIndex((e) => e.id === id);
 
-}
+        if (index === -1) {
+            res.writeHead(404, { "content-type": "application/json;charset=utf-8" });
+            return res.end(JSON.stringify({ error: "Expense not found" }));
+        }
+
+        const [deleted] = expenses.splice(index, 1);
+
+        const tmp = `${dataFilePath}.tmp`;
+        await fs.writeFile(tmp, JSON.stringify(expenses), "utf-8");
+        await fs.rename(tmp, dataFilePath);
+
+        res.writeHead(200, { "content-type": "application/json;charset=utf-8" });
+        res.end(JSON.stringify(deleted));
+    } catch (error) {
+        console.error("DELETE expense failed", error);
+        res.writeHead(500, { "content-type": "text/plain;charset=utf-8" });
+        res.end("delete failed");
+    }
+};
 
 
 
