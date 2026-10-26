@@ -1,1 +1,114 @@
-[{"id":"exp_001","title":"Grocery shopping","amount":1840.5,"category":"Food","date":"2026-10-18","createdAt":"2026-10-18T14:32:10Z"},{"id":"exp_002","title":"Metro card recharge","amount":500,"category":"Transport","date":"2026-10-19","createdAt":"2026-10-19T08:05:41Z"},{"id":"exp_003","title":"Electricity bill","amount":2350,"category":"Utilities","date":"2026-10-20","createdAt":"2026-10-20T10:12:03Z"},{"id":"exp_004","title":"Movie tickets","amount":700,"category":"Entertainment","date":"2026-10-22","createdAt":"2026-10-22T19:47:55Z"},{"id":"exp_005","title":"Online Python course","amount":1299,"category":"Education","date":"2026-10-23","createdAt":"2026-10-23T12:20:30Z"},{"id":"exp_006","title":"Grocery shopping","amount":1240.5,"category":"Food","date":"2026-10-18","createdAt":"2026-10-18T14:32:10Z"},{"id":"exp_007","title":"Grocery shopping","amount":1240.5,"category":"Food","date":"2026-10-20","createdAt":"2026-10-20T14:32:10Z"},{"id":"exp_007","title":"Grocery shopping","amount":1240.5,"category":"Food","date":"2026-10-20"},{"id":"exp_007","title":"Grocery shopping","amount":324,"category":"Food","date":"2026-10-20","createdAt":"2026-10-20T14:32:10Z"},{"title":"Grocery shopping","amount":3,"category":"Food","date":"2026-10-20","createdAt":"2026-10-20T14:32:10Z","id":"14f1d2ff-7f6f-4f44-a0fa-4bbde2048126"}]
+[
+    {
+        "id": "3f6c1a52-8b47-4d9e-a1c3-5e2f7b9d0a11",
+        "title": "Grocery shopping",
+        "amount": 1840.5,
+        "category": "Food",
+        "date": "2026-10-02",
+        "createdAt": "2026-10-02T13:42:10.000Z"
+    },
+    {
+        "id": "a8d2e7b4-1c59-4f36-9e80-2b4d6c7f1a22",
+        "title": "Metro card recharge",
+        "amount": 500,
+        "category": "Transport",
+        "date": "2026-10-03",
+        "createdAt": "2026-10-03T03:05:41.000Z"
+    },
+    {
+        "id": "5b9f0c3e-6a21-4e78-b4d5-9c1e8a2f3b33",
+        "title": "Electricity bill",
+        "amount": 2350,
+        "category": "Utilities",
+        "date": "2026-10-05",
+        "createdAt": "2026-10-05T05:12:03.000Z"
+    },
+    {
+        "id": "c7e4a1d8-3f92-4b65-8a07-6d5c2e9b4c44",
+        "title": "Movie tickets",
+        "amount": 700,
+        "category": "Entertainment",
+        "date": "2026-10-08",
+        "createdAt": "2026-10-08T14:47:55.000Z"
+    },
+    {
+        "id": "1e8b5d2f-9c74-4a30-b6e1-3f7a0d8c5d55",
+        "title": "Online Python course",
+        "amount": 1299,
+        "category": "Education",
+        "date": "2026-10-09",
+        "createdAt": "2026-10-09T06:20:30.000Z"
+    },
+    {
+        "id": "9d3a6f7c-2e18-4c59-a0b4-8e1f5c3d6e66",
+        "title": "Lunch with colleagues",
+        "amount": 460.75,
+        "category": "Food",
+        "date": "2026-10-12",
+        "createdAt": "2026-10-12T08:15:22.000Z"
+    },
+    {
+        "id": "e2c8b4a9-5d63-4f17-9c82-1a6d3e7f8a77",
+        "title": "Cab to airport",
+        "amount": 845,
+        "category": "Transport",
+        "date": "2026-10-14",
+        "createdAt": "2026-10-14T01:30:48.000Z"
+    },
+    {
+        "id": "7a1f9e3d-8b45-4d26-b7c0-4c2e6a9d1b88",
+        "title": "Internet bill",
+        "amount": 999,
+        "category": "Utilities",
+        "date": "2026-10-15",
+        "createdAt": "2026-10-15T04:50:09.000Z"
+    },
+    {
+        "id": "b4d6c2e8-0a97-4e53-8f19-7d3b5a1c9c99",
+        "title": "Weekly groceries",
+        "amount": 1215.25,
+        "category": "Food",
+        "date": "2026-10-18",
+        "createdAt": "2026-10-18T12:02:37.000Z"
+    },
+    {
+        "id": "6c0e8a5f-4d31-4b72-a9e6-2f8c1d4b7daa",
+        "title": "Concert tickets",
+        "amount": 2500,
+        "category": "Entertainment",
+        "date": "2026-10-18",
+        "createdAt": "2026-10-18T16:25:14.000Z"
+    },
+    {
+        "id": "d1f7b3c9-6e85-4a40-b2d7-5a9e0c6f2bbb",
+        "title": "Pharmacy",
+        "amount": 385.4,
+        "category": "Health",
+        "date": "2026-10-20",
+        "createdAt": "2026-10-20T09:40:51.000Z"
+    },
+    {
+        "id": "28a5e9d1-7c03-4f68-9b14-8e4d2a6c3ccc",
+        "title": "Auto fare",
+        "amount": 120,
+        "category": "Transport",
+        "date": "2026-10-20",
+        "createdAt": "2026-10-20T11:08:26.000Z"
+    },
+    {
+        "id": "f9b2d6a4-1e57-4c83-a5f0-3c7e9b1d4ddd",
+        "title": "Programming book",
+        "amount": 649,
+        "category": "Education",
+        "date": "2026-10-22",
+        "createdAt": "2026-10-22T07:33:18.000Z"
+    },
+    {
+        "id": "4e7c1b8f-3a69-4d25-8c92-6b0a5d2e7eee",
+        "title": "Dinner out",
+        "amount": 1180,
+        "category": "Food",
+        "date": "2026-10-24",
+        "createdAt": "2026-10-24T15:55:03.000Z"
+    }
+]

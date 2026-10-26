@@ -22,13 +22,12 @@ const server = createServer(async (req, res) => {
             return healthCheck(req, res);
         }
         if (req.method === "GET" && path === "/expenses") {
-            const categoryFilter = url.searchParams.get('category');
-            const dateFilter = url.searchParams.get('date');
-            let filters:filter = {
-                categoryFilter:categoryFilter,
-                dateFilter:dateFilter
-            }
-            return await getAllExpenses(req, res,filters);
+            const filters: filter = {
+                categoryFilter: url.searchParams.get("category"),
+                startDate: url.searchParams.get("startDate"),
+                endDate: url.searchParams.get("endDate"),
+            };
+            return await getAllExpenses(req, res, filters);
         }
 
         if(req.method ==="POST" && path==="/expenses"){

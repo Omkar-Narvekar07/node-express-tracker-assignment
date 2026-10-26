@@ -13,32 +13,49 @@ interface Expense {
 }
 type filter = {
     categoryFilter: string | null,
-    dateFilter: string | null
+    startDate: string | null,
+    endDate: string | null
 }
+
 
 const dataFilePath = path.join(process.cwd(), "/src/data/expenses.json");
 
 const getAllExpenses = async (req: http.IncomingMessage, res: http.ServerResponse, filters: filter) => {
-    const rawExpenses = await fs.readFile(dataFilePath, 'utf-8');
-    const expenses: Expense[] = JSON.parse(rawExpenses);
+    try {
+        const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
-    let filteredExpenses: Expense[] = [];
-    if (filters.categoryFilter == null && filters.dateFilter == null) {
-        filteredExpenses = expenses
-    } else if (filters.categoryFilter != null && filters.dateFilter == null) {
-        filteredExpenses = expenses.filter((element) => element.category == filters.categoryFilter)
-    }
-    else if (filters.categoryFilter == null && filters.dateFilter != null) {
-        filteredExpenses = expenses.filter((element) => element.date == filters.dateFilter)
-    }
-    else {
+        for (const [name, value] of [["startDate", filters.startDate], ["endDate", filters.endDate]] as const) {
+            if (value !== null && (!datePattern.test(value) || Number.isNaN(Date.parse(value)))) {
+                res.writeHead(400, { "content-type": "application/json;charset=utf-8" });
+                return res.end(JSON.stringify({ error: `${name} must be a valid date in YYYY-MM-DD format` }));
+            }
+        }
+        if (filters.startDate !== null && filters.endDate !== null && filters.startDate > filters.endDate) {
+            res.writeHead(400, { "content-type": "application/json;charset=utf-8" });
+            return res.end(JSON.stringify({ error: "startDate must not be after endDate" }));
+        }
 
-        filteredExpenses = expenses.filter((element) => element.category == filters.categoryFilter && element.date == filters.dateFilter)
-    }
-    res.writeHead(200, { "content-type": 'application/json;charset=utf-8' })
-    res.end(JSON.stringify(filteredExpenses))
+        const rawExpenses = await fs.readFile(dataFilePath, "utf-8");
+        const expenses: Expense[] = JSON.parse(rawExpenses);
 
-}
+        const category = filters.categoryFilter?.trim().toLowerCase() || null;
+
+        // ISO YYYY-MM-DD strings sort lexicographically, so string comparison is a valid range check.
+        const filteredExpenses = expenses.filter((e) =>
+            (category === null || e.category.toLowerCase() === category) &&
+            (filters.startDate === null || e.date >= filters.startDate) &&
+            (filters.endDate === null || e.date <= filters.endDate)
+        );
+
+        res.writeHead(200, { "content-type": "application/json;charset=utf-8" });
+        res.end(JSON.stringify(filteredExpenses));
+    } catch (error) {
+        console.error("GET expenses failed", error);
+        res.writeHead(500, { "content-type": "text/plain;charset=utf-8" });
+        res.end("fetch failed");
+    }
+};
+
 
 
 const getExpenseById = async (req: http.IncomingMessage, res: http.ServerResponse, id: string) => {
@@ -57,30 +74,36 @@ const getExpenseById = async (req: http.IncomingMessage, res: http.ServerRespons
 };
 
 const getExpenseSummary = async (req: http.IncomingMessage, res: http.ServerResponse) => {
+    try {
+        const rawExpenses = await fs.readFile(dataFilePath, "utf-8");
+        const expenses: Expense[] = JSON.parse(rawExpenses);
 
+        const totals = new Map<string, number>();
+        let total = 0;
 
-    const rawExpenses = await fs.readFile(dataFilePath, 'utf-8');
-    const expenses = JSON.parse(rawExpenses) as Expense[]
-
-    const summary: { category: string, expense: number }[] = [];
-
-    expenses.forEach((ele) => {
-        const cat = ele.category
-        const exp = ele.amount
-        const existing = summary.find((s) => s.category === cat)
-        if (existing) {
-            existing.expense = Math.round((existing.expense + exp) * 100) / 100
-        } else {
-            summary.push({ category: cat, expense: exp })
+        for (const e of expenses) {
+            totals.set(e.category, (totals.get(e.category) ?? 0) + e.amount);
+            total += e.amount;
         }
-    })
 
-    res.writeHead(200, { "content-type": 'application/json;charset=utf-8' })
-    res.end(JSON.stringify(summary))
+        // Round once at the end so floating-point error does not accumulate per step.
+        const byCategory = [...totals].map(([category, amount]) => ({
+            category,
+            total: Math.round(amount * 100) / 100,
+        }));
 
-
-}
-
+        res.writeHead(200, { "content-type": "application/json;charset=utf-8" });
+        res.end(JSON.stringify({
+            total: Math.round(total * 100) / 100,
+            count: expenses.length,
+            byCategory,
+        }));
+    } catch (error) {
+        console.error("GET summary failed", error);
+        res.writeHead(500, { "content-type": "text/plain;charset=utf-8" });
+        res.end("summary failed");
+    }
+};
 
 const postExpenses = (req: IncomingMessage, res: http.ServerResponse) => {
     const chunks: Buffer[] = [];
