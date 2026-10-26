@@ -239,7 +239,7 @@ const deleteExpenseById = async(req:IncomingMessage, res:ServerResponse,id:strin
         const newExpenses:Expense[] = expenses.filter((expense)=>expense.id !== id)
         
         const tmp = `${dataFilePath}.tmp`;
-        await fs.writeFile(tmp, JSON.stringify(expenses), "utf-8");
+        await fs.writeFile(tmp, JSON.stringify(newExpenses), "utf-8");
         await fs.rename(tmp, dataFilePath);
         res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
         res.end(JSON.stringify(newExpenses));
